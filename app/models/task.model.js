@@ -1,0 +1,26 @@
+import mongoose from "mongoose";
+
+const taskSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      minLength: 5,
+      maxLength: 50,
+      trim: true,
+    },
+    status: {
+      enum: ["pending", "completed"],
+      default: "pending",
+    },
+  },
+  { timestamps: true },
+);
+const Task = mongoose.model("Task", taskSchema);
+
+export default Task;

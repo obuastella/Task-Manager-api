@@ -1,7 +1,10 @@
 import Task from "../models/task.model.js";
-import getAllTasksService from "../services/task.service.js";
+import {
+  getAllTasksService,
+  createTaskService,
+} from "../services/task.service.js";
 
-const getAllTasks = async (req, res) => {
+export const getAllTasks = async (req, res) => {
   try {
     const task = await getAllTasksService();
     res
@@ -14,5 +17,15 @@ const getAllTasks = async (req, res) => {
   }
 };
 
-const createTask = async (req, res) => {};
-export default getAllTasks;
+export const createTask = async (req, res) => {
+  try {
+    const { title, description, status } = req.body;
+    const newTask = await createTaskService({ title, description, status });
+    res
+      .status(200)
+      .json({ message: "Task created succesfully!", task: newTask });
+  } catch (error) {
+    console.log("An error occurred:", error);
+    res.status(500).json({ message: "An error occurred" });
+  }
+};

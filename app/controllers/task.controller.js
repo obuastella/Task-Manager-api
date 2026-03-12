@@ -29,3 +29,10 @@ export const createTask = async (req, res) => {
     res.status(500).json({ message: "An error occurred" });
   }
 };
+
+export const getTask = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log("An error occurred ");
+  }
+};

@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import Task from "../models/task.model.js";
 import {
   getAllTasksService,
   createTaskService,
+  getTaskService,
 } from "../services/task.service.js";
 
 export const getAllTasks = async (req, res) => {
@@ -32,7 +34,19 @@ export const createTask = async (req, res) => {
 
 export const getTask = async (req, res) => {
   try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ message: "Invalid id" });
+    }
+    const task = await getTaskService(id);
+    if (!task) {
+      return res.status(404).json({ message: `Task ${id} not found.` });
+    }
+    return res
+      .status(200)
+      .json({ message: "Task retrieved succesfully", task });
   } catch (error) {
-    console.log("An error occurred ");
+    res.status(500).json("Internal Server Error");
+    console.log("An error occurred... ", error);
   }
 };
